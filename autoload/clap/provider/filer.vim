@@ -232,7 +232,12 @@ function! s:filer_on_move() abort
 endfunction
 
 function! s:filer_on_no_matches(input) abort
-  execute 'edit' a:input
+  let path = s:smart_concatenate(s:current_dir, a:input)
+  if a:input[-1:] ==# '/'
+     call mkdir(path, 'p')
+  else
+     execute 'edit' path
+  endif
 endfunction
 
 function! s:start_rpc_service() abort
